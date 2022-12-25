@@ -2,3 +2,12 @@
 - npm i express
 - npm i dotenv
 - npm i -D nodemon
+
+# logger file ---> - morgan - https://github.com/expressjs/morgan
+- npm i morgan
+
+# mongoose ---> https://mongoosejs.com/
+- npm i mongoose
+
+# ttps://github.com/Marak/colors.js
+- npm i colors
