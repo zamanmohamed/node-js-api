@@ -11,3 +11,5 @@
 
 # ttps://github.com/Marak/colors.js
 - npm i colors
+
+- npm i slugify
