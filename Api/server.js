@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 // const logger = require("./middleware/logger");
 const morgan = require("morgan");
 colors = require("colors");
+const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
 
 // Load env vars
@@ -27,6 +28,10 @@ if (process.env.NODE_ENV === "development") {
 
 // Mount routers
 app.use("/api/v1/bootcamps", bootcamps);
+
+// ඉහල ඇති සියලු app.use() ටික වැඩ නොකල විට අන්තිමට errorHandler වෙත පැමිනෙ
+// නැතහොත් ඉහල ඇති app.use() වලින් next() call කල විත පැමිනෙ
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
