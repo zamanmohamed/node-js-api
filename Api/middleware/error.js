@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message;
 
   // Log to console for dev
-  //   console.log(err);
+  console.log(err);
 
   // Mongoose bad ObjectId
   if (err.name === "CastError") {
@@ -21,6 +21,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   // Mongoose validation error
+  // mongo db collection model හි required msg ටික dispaly කරයි
   if (err.name === "ValidationError") {
     const message = Object.values(err.errors).map((val) => val.message);
     error = new ErrorResponse(message, 400);
