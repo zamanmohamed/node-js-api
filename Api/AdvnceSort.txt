@@ -1,0 +1,12 @@
+
+############
+$lte --> less than or equal to (i.e. <=)
+
+{ field: { $lte: value } }
+
+{ averageCost: { $lte: 12000 } }
+
+{{URL}}/api/v1/bootcamps?averageCost[$lte]=12000
+
+
+############
