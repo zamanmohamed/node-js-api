@@ -6,9 +6,61 @@ const Bootcamp = require("../models/Bootcamp");
 // @route     GET /api/v1/bootcamps
 // @access    Public
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
-  const bootcamps = await Bootcamp.find(req.query);
+  // const bootcamps = await Bootcamp.find(req.query);
 
-  console.log(JSON.stringify(req.query));
+  // console.log(JSON.stringify(req.query));
+
+  let query;
+
+  // Copy req.query
+  const reqQuery = { ...req.query };
+
+  // Fields to exclude
+  const removeFields = ["select", "sort", "page", "limit"];
+
+  // Loop over removeFields and delete them from reqQuery
+  /*api එකෙ removeFields array එකෙහි වචන තිබුනා නම් එ 
+  වචනයත් එක්ක ඊට පසුව එන සියලුම value delete කරයි*/
+  // --------------------eg:-----------------------------
+  /*{{URL}}/api/v1/bootcamps?select=name,website  
+   API හි select=name,website සියල්ල remove කරයි */
+  // ---------------------------------------------------
+  removeFields.forEach((param) => delete reqQuery[param]);
+
+  // Create query string
+  let queryStr = JSON.stringify(reqQuery);
+
+  // Create operators ($gt, $gte, etc)
+  // මෙහිදී gt, gte වගෙ කෑලි තිබෙ නම් එවට ඉස්සරහින් $ කෑල්ලක් දමයි
+  queryStr = queryStr.replace(
+    /\b(gt|gte|lt|lte|in)\b/g,
+    (match) => `$${match}`
+  );
+
+  // Finding resource
+  // {{URL}}/api/v1/bootcamps?averageCost[lte]=12000
+  // {{URL}}/api/v1/bootcamps?name=Codemasters
+  // වගෙ searching api මෙහිදී --කෙලින්ම-- pass කරනු ලැබෙ.
+  query = Bootcamp.find(JSON.parse(queryStr));
+
+  // Select Fields
+  if (req.query.select) {
+    const fields = req.query.select.split(",").join(" ");
+    query = query.select(fields);
+    //මෙහි api හි select ඇති බැවින්
+    //Bootcamp.find({}).select(fields);
+  }
+
+  // Sort
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(",").join(" ");
+    query = query.sort(sortBy);
+    //Bootcamp.find({}).sort(fields);
+  } else {
+    query = query.sort("-createdAt");
+  }
+
+  const bootcamps = await query;
 
   res.status(200).json({ success: true, data: bootcamps });
 });

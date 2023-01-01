@@ -1,12 +1,55 @@
+##############################################################
+{
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    -71.3232,
+                    42.64981
+                ],
+                "formattedAddress": "220 Pawtucket St, Lowell, MA 01854-3502, US",
+                "street": "220 Pawtucket St",
+                "city": "Lowell",
+                "state": "MA",
+                "zipcode": "01854-3502",
+                "country": "US"
+            },
+            "_id": "5d713a66ec8f2b88b8f830b8",
+            "name": "ModernTech Bootcamp",
+            "description": "ModernTech has one goal, and that is to make you a rockstar developer and/or designer with a six figure salary. We teach both development and UI/UX",
+            "website": "https://moderntech.com",
+            "phone": "(222) 222-2222",
+            "email": "enroll@moderntech.com",
+            "careers": [
+                "Web Development",
+                "UI/UX",
+                "Mobile Development"
+            ],
+            "averageCost": 12000,
+            "photo": "no-photo.jpg",
+            "housing": false,
+            "jobAssistance": true,
+            "jobGuarantee": false,
+            "acceptGi": true,
+            "createdAt": "2022-12-28T20:07:00.520Z",
+            "slug": "moderntech-bootcamp",
+            "__v": 0
+ }
+ ##############################################################
+
 
 ############
 $lte --> less than or equal to (i.e. <=)
 
 { field: { $lte: value } }
 
+{{URL}}/api/v1/bootcamps?averageCost[$lte]=12000
+- select averageCost ess than or equal to 12000
 { averageCost: { $lte: 12000 } }
 
-{{URL}}/api/v1/bootcamps?averageCost[$lte]=12000
+{{URL}}/api/v1/bootcamps?averageCost[$lte]=12000&location.city=Lowell
+- select averageCost ess than or equal to 12000 and location.city=Lowell
+{"averageCost":{"$eq":"12000"},"location.city":"Lowell"}
 
 
 ############
+
