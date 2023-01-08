@@ -44,4 +44,55 @@ const CourseSchema = new mongoose.Schema({
   // },
 });
 
+// Static method to get avg of course tuitions
+CourseSchema.statics.getAverageCost = async function (bootcampId) {
+  //id එක අනුව aggregate කරනවා
+  const obj = await this.aggregate([
+    {
+      $match: { bootcamp: bootcampId },
+    },
+    {
+      $group: {
+        _id: "$bootcamp",
+        averageCost: { $avg: "$tuition" },
+      },
+    },
+  ]);
+
+  console.log(obj);
+  // ====== OUT PUT =========
+  // {
+  //   _id: new ObjectId("5d725a1b7b292f5f8ceff788"),
+  //   averageCost: 7166.666666666667
+  // }
+  // ========================
+
+  try {
+    if (obj[0]) {
+      await this.model("Bootcamp").findByIdAndUpdate(bootcampId, {
+        //obj වලින් ලැබුනු averageCost එක 10ට වටයලා save කරනවා
+        averageCost: Math.ceil(obj[0].averageCost / 10) * 10,
+      });
+    } else {
+      await this.model("Bootcamp").findByIdAndUpdate(bootcampId, {
+        averageCost: undefined,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// Call getAverageCost  function after every save in course route
+CourseSchema.post("save", async function () {
+  //get the bootcamp ID
+  await this.constructor.getAverageCost(this.bootcamp);
+});
+
+// Call getAverageCost  function after every remove in course route
+CourseSchema.post("remove", async function () {
+  //get the bootcamp ID
+  await this.constructor.getAverageCost(this.bootcamp);
+});
+
 module.exports = mongoose.model("Course", CourseSchema);
