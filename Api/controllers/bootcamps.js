@@ -42,7 +42,12 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   // {{URL}}/api/v1/bootcamps?averageCost[lte]=12000
   // {{URL}}/api/v1/bootcamps?name=Codemasters
   // වගෙ searching api මෙහිදී --කෙලින්ම-- pass කරනු ලැබෙ.
-  query = Bootcamp.find(JSON.parse(queryStr));
+  //-------------------populate --> virtual middleware ------------------------------
+  // Reverse populate with virtuals --> called in bootcamps model virtual middleware.
+  // මෙහිදී "courses" vairable එක යටතෙ Course හි variable popultae කරයි.
+  /* All Bootcamp display වෙද්දි එම Bootcamp එකට ඇති
+   many courses display කරයි  */
+  query = Bootcamp.find(JSON.parse(queryStr)).populate("courses");
 
   // Select Fields
   // {{URL}}/api/v1/bootcamps?select="name"
@@ -155,13 +160,18 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
 // @route     DELETE /api/v1/bootcamps/:id
 // @access    Private
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+  const bootcamp = await Bootcamp.findById(req.params.id);
 
   if (!bootcamp) {
     return next(
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     );
   }
+
+  /* bootcamp model හි create කර ඇති remove middleware එක අනුව,
+   delete courses when a bootcamp is deleted */
+  bootcamp.remove();
+
   res.status(200).json({ success: true, data: {} });
 });
 
