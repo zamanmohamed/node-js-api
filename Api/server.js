@@ -14,6 +14,7 @@ connectDB();
 
 // Route files
 const bootcamps = require("./routes/bootcamps");
+const courses = require("./routes/courses");
 
 const app = express();
 
@@ -28,6 +29,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Mount routers
 app.use("/api/v1/bootcamps", bootcamps);
+app.use("/api/v1/courses", courses);
 
 // ඉහල ඇති සියලු app.use() ටික වැඩ නොකල විට අන්තිමට errorHandler වෙත පැමිනෙ
 // නැතහොත් ඉහල ඇති app.use() වලින් next() call කල විත පැමිනෙ

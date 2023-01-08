@@ -10,8 +10,15 @@ const {
   getBootcampsInRadius,
 } = require("../controllers/bootcamps");
 
-router.route("/radius/:zipcode/:distance").get(getBootcampsInRadius);
+// Include other resource routers
+const courseRouter = require("./courses");
 
+// -----------Re-route into other resource routers--------------------
+// bootcamps route file coures route  වලට call කිරීම
+router.use("/:bootcampId/courses", courseRouter);
+
+//------------Normal routes-------------------------------------------
+router.route("/radius/:zipcode/:distance").get(getBootcampsInRadius);
 router.route("/").get(getBootcamps).post(createBootcamp);
 router
   .route("/:id")
