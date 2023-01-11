@@ -85,13 +85,13 @@ CourseSchema.statics.getAverageCost = async function (bootcampId) {
 
 // Call getAverageCost  function after every save in course route
 CourseSchema.post("save", async function () {
-  //get the bootcamp ID
+  //after every save in get the bootcamp ID
   await this.constructor.getAverageCost(this.bootcamp);
 });
 
 // Call getAverageCost  function after every remove in course route
 CourseSchema.post("remove", async function () {
-  //get the bootcamp ID
+  //after every remove in course get the bootcamp ID
   await this.constructor.getAverageCost(this.bootcamp);
 });
 
