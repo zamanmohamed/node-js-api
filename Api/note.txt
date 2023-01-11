@@ -20,3 +20,7 @@
 
 #File upload
 - npm i express-fileupload
+
+##Authentication
+- npm install jsonwebtoken
+- npm install bcrypt
