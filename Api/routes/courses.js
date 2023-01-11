@@ -8,14 +8,16 @@ const {
   deleteCourse,
 } = require("../controllers/courses");
 
+//මෙහි route එක bootcamp route හිද use කර ඇති බැවින්  { mergeParams: true } යොදා ඇත.
 const router = express.Router({ mergeParams: true });
+const { protect } = require("../middleware/auth");
 
-router.route("/").get(getCourses).post(addCourse);
+router.route("/").get(getCourses).post(protect, addCourse);
 router
   .route("/:id")
   .get(getCourse)
   .put(updateCourse)
-  .put(updateCourse)
-  .delete(deleteCourse);
+  .put(protect, updateCourse)
+  .delete(protect, deleteCourse);
 
 module.exports = router;

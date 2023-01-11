@@ -86,3 +86,16 @@ const sendTokenResponse = (user, statusCode, res) => {
     token,
   });
 };
+
+// @desc      Get current logged in user
+// @route     GET /api/v1/auth/me
+// @access    Private
+exports.getMe = asyncHandler(async (req, res, next) => {
+  // user is already available in req due to the protect middleware
+  const user = req.user;
+
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
