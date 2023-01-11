@@ -17,3 +17,6 @@
 # geo coder
 - https://developer.mapquest.com/
 - npm install node-geocoder
+
+#File upload
+- npm i express-fileupload
