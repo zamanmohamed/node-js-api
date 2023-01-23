@@ -24,3 +24,7 @@
 ##Authentication
 - npm install jsonwebtoken
 - npm install bcrypt
+
+
+#Send mail
+- https://mailtrap.io/
